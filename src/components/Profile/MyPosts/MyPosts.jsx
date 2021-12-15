@@ -2,20 +2,22 @@ import React from 'react';
 import classes from './MyPosts.module.css';
 import Post from './Post/Post';
 
-const MyPosts = () => {
+const MyPosts = (props) => {
+    let postsElements = props.posts.map((post) => <Post message={post.message} likesCount={post.likesCount} />);
+
     return (
-        <div>
-            My posts
+        <div className={classes.postsBlock}>
+            <h3>My posts</h3>
             <div>
-                <textarea></textarea>
-                <button>Add Post</button>
+                <div>
+                    <textarea></textarea>
+                </div>
+                <div>
+                    <button>Add Post</button>
+                </div>
             </div>
             <div className={classes.posts}>
-                <Post message="It's my first post" likesCount='31' />
-                <Post message='Hello my friend!' likesCount='12' />
-                <Post message='This new post' likesCount='3' />
-                <Post />
-                <Post />
+                {postsElements}
             </div>
         </div>
     );
