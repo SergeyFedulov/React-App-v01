@@ -1,4 +1,4 @@
-import {renderEntireTree} from './../render';
+import { renderEntireTree } from './../render';
 
 let state = {
     profilePage: {
@@ -6,7 +6,8 @@ let state = {
             { id: 1, message: "It's my first post", likesCount: 31 },
             { id: 2, message: 'Hello my friend!', likesCount: 12 },
             { id: 3, message: 'This new post', likesCount: 3 }
-        ]
+        ],
+        newPostText: ['it-kamasutra']
     },
     dialogsPage: {
         dialogs: [
@@ -31,14 +32,21 @@ let state = {
     }
 }
 
-export let addPost = (postMessage) => {
+window.state = state;
+
+export let addPost = () => {
     let newPost = {
         id: 5,
-        message: postMessage,
+        message: state.profilePage.newPostText,
         likesCount: 0
     };
-
+    state.profilePage.newPostText = ''; // зануляем поле textarea;
     state.profilePage.posts.push(newPost);
+    renderEntireTree(state);
+}
+
+export let updateNewPostText = (newText) => {
+    state.profilePage.newPostText = newText;
     renderEntireTree(state);
 }
 
