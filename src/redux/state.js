@@ -21,7 +21,8 @@ let state = {
             { id: 1, message: 'Hello' },
             { id: 2, message: 'How are you?' },
             { id: 3, message: 'Well, well, well' }
-        ]
+        ],
+        newMessageText: ['Hey, Sergio']
     },
     navbar: {
         friendsList: [
@@ -50,12 +51,18 @@ export let updateNewPostText = (newText) => {
     renderEntireTree(state);
 }
 
-export let addMessage = (currentMessage) => {
+export let addMessage = () => {
     let newMessage = {
         id: 4,
-        message: currentMessage
+        message: state.dialogsPage.newMessageText
     };
+    state.dialogsPage.newMessageText = '';
     state.dialogsPage.messages.push(newMessage);
+    renderEntireTree(state);
+}
+
+export let updateNewMessageText = (newTextMessage) => {
+    state.dialogsPage.newMessageText = newTextMessage;
     renderEntireTree(state);
 }
 
