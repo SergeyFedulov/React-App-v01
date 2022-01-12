@@ -1,75 +1,74 @@
-let renderEntireTree = () => {
-    console.log('State changed')
-}
-
-let state = {
-    profilePage: {
-        posts: [
-            { id: 1, message: "It's my first post", likesCount: 31 },
-            { id: 2, message: 'Hello my friend!', likesCount: 12 },
-            { id: 3, message: 'This new post', likesCount: 3 }
-        ],
-        newPostText: ['it-kamasutra']
+let store = {
+    _state: {
+        profilePage: {
+            posts: [
+                { id: 1, message: "It's my first post", likesCount: 31 },
+                { id: 2, message: 'Hello my friend!', likesCount: 12 },
+                { id: 3, message: 'This new post', likesCount: 3 }
+            ],
+            newPostText: ['it-kamasutra']
+        },
+        dialogsPage: {
+            dialogs: [
+                { id: 1, name: 'Jhony' },
+                { id: 2, name: 'Nick' },
+                { id: 3, name: 'Alex' },
+                { id: 4, name: 'Victor' },
+                { id: 5, name: 'Ted' }
+            ],
+            messages: [
+                { id: 1, message: 'Hello' },
+                { id: 2, message: 'How are you?' },
+                { id: 3, message: 'Well, well, well' }
+            ],
+            newMessageText: ['Hey, Sergio']
+        },
+        navbar: {
+            friendsList: [
+                { friend: 'Jhony' },
+                { friend: 'Victor' },
+                { friend: 'Alex' }
+            ]
+        }
     },
-    dialogsPage: {
-        dialogs: [
-            { id: 1, name: 'Jhony' },
-            { id: 2, name: 'Nick' },
-            { id: 3, name: 'Alex' },
-            { id: 4, name: 'Victor' },
-            { id: 5, name: 'Ted' }
-        ],
-        messages: [
-            { id: 1, message: 'Hello' },
-            { id: 2, message: 'How are you?' },
-            { id: 3, message: 'Well, well, well' }
-        ],
-        newMessageText: ['Hey, Sergio']
+    getState() {
+        return this._state;
     },
-    navbar: {
-        friendsList: [
-            { friend: 'Jhony' },
-            { friend: 'Victor' },
-            { friend: 'Alex' }
-        ]
+    _callSubscriber() { //старое название метода renderEntireTree;
+        console.log('State changed')
+    },
+    addPost() {
+        let newPost = {
+            id: 5,
+            message: this._state.profilePage.newPostText,
+            likesCount: 0
+        };
+        this._state.profilePage.newPostText = ''; // зануляем поле textarea;
+        this._state.profilePage.posts.push(newPost);
+        this._callSubscriber(this._state);
+    },
+    updateNewPostText(newText) {
+        this._state.profilePage.newPostText = newText;
+        this._callSubscriber(this._state);
+    },
+    addMessage() {
+        let newMessage = {
+            id: 4,
+            message: this._state.dialogsPage.newMessageText
+        };
+        this._state.dialogsPage.newMessageText = '';
+        this._state.dialogsPage.messages.push(newMessage);
+        this._callSubscriber(this._state);
+    },
+    updateNewMessageText(newTextMessage) {
+        this._state.dialogsPage.newMessageText = newTextMessage;
+        this._callSubscriber(this._state);
+    },
+    subscribe(observer) {
+        this._callSubscriber = observer;
     }
 }
 
-window.state = state;
+window.store = store;
 
-export let addPost = () => {
-    let newPost = {
-        id: 5,
-        message: state.profilePage.newPostText,
-        likesCount: 0
-    };
-    state.profilePage.newPostText = ''; // зануляем поле textarea;
-    state.profilePage.posts.push(newPost);
-    renderEntireTree(state);
-}
-
-export const updateNewPostText = (newText) => {
-    state.profilePage.newPostText = newText;
-    renderEntireTree(state);
-}
-
-export const addMessage = () => {
-    let newMessage = {
-        id: 4,
-        message: state.dialogsPage.newMessageText
-    };
-    state.dialogsPage.newMessageText = '';
-    state.dialogsPage.messages.push(newMessage);
-    renderEntireTree(state);
-}
-
-export const updateNewMessageText = (newTextMessage) => {
-    state.dialogsPage.newMessageText = newTextMessage;
-    renderEntireTree(state);
-}
-
-export const subscribe = (observer) => {
-    renderEntireTree = observer;
-}
-
-export default state;
+export default store;
